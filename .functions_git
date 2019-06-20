@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# Git functions
+
+commit() {
+  # Commit changes in fastest way
+	printf "Please enter commit message "
+	read message
+	git add .
+	git commit -m "${message}"
+	git push
+}

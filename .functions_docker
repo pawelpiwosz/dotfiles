@@ -1,0 +1,47 @@
+#! /bin/bash
+
+# Docker functions
+
+function docker-clean-images() {
+  # Clean images
+  docker images --no-trunc | grep '<none>' | awk '{ print $3 }' | xargs docker rmi
+}
+
+function docker-clean-images-force() {
+  # Forced clean images
+  docker images --no-trunc | grep '<none>' | awk '{ print $3 }' | xargs docker rmi -f
+}
+
+function docker-clean-containers() {
+  # Clean containers
+  docker ps --filter status=dead --filter status=exited -aq|xargs docker rm -v
+}
+
+function docker-clean-volumes() {
+  # Clean volumes
+  "docker volume ls -qf "dangling=true" | xargs docker volume rm"
+}
+
+function docker-clean() {
+  # Clean all
+  clean-containers
+  clean-images
+  clean-volumes
+}
+
+function docker-run-github() {
+  # Start github-gpg container
+  docker run -ti -d --name github -h github --restart always -v /home/pawel/GIT/:/home/pawel/GIT:rw github-gpg
+  sleep 2
+  docker ps -f name=github
+}
+
+function docker-run-firefox() {
+  # Start Firefox container
+  docker run -it --rm --name firefox -v /dev/shm:/dev/shm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix firefox
+}
+
+function docker-run-firefox-private() {
+  # Start Firefox container
+  docker run -it --rm --name firefox -v /dev/shm:/dev/shm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix firefox --private-window
+}
