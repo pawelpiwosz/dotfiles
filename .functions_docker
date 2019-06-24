@@ -31,17 +31,38 @@ function docker-clean() {
 
 function docker-run-github() {
   # Start github-gpg container
-  docker run -ti -d --name github -h github --restart always -v /home/pawel/GIT/:/home/pawel/GIT:rw github-gpg
+  docker run -ti -d --name github \
+    -h github --restart always \
+    -v /home/pawel/GIT/:/home/pawel/GIT:rw \
+    almerhor/github-gpg
   sleep 2
   docker ps -f name=github
 }
 
 function docker-run-firefox() {
   # Start Firefox container
-  docker run -it --rm --name firefox -v /dev/shm:/dev/shm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix firefox
+  docker run -it --rm --name firefox \
+    -v /dev/shm:/dev/shm \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    almerhor/firefox
 }
 
 function docker-run-firefox-private() {
   # Start Firefox container
-  docker run -it --rm --name firefox -v /dev/shm:/dev/shm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix firefox --private-window
+  docker run -it --rm --name firefox \
+    -v /dev/shm:/dev/shm \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    almerhor/firefox --private-window
+}
+
+function docker-run-chrome() {
+  # Start Chrome container
+  docker run -it --rm --name chrome \
+    -v /dev/shm:/dev/shm \
+    -v /tmp/.X11-unix:/tmp/.X11-unix\
+    -e DISPLAY=$DISPLAY \
+    --security-opt seccomp=$(pwd)/chrome.json \
+    amerhor/chrome
 }
