@@ -24,9 +24,9 @@ function docker-clean-volumes() {
 
 function docker-clean() {
   # Clean all
-  clean-containers
-  clean-images
-  clean-volumes
+  docker-clean-containers
+  docker-clean-images
+  docker-clean-volumes
 }
 
 function docker-run-github() {
